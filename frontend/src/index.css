@@ -559,8 +559,65 @@ section {
   cursor: not-allowed;
 }
 
-@media (max-width: 868px) {
+/* Mobile & Tablet Responsiveness */
+@media (max-width: 968px) {
+  .hero-content {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 30px;
+    padding-top: 60px;
+  }
+
+  .hero-3d {
+    height: 400px;
+    width: 100%;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+
   .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contact-info {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-desc {
+    margin: 0 auto 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding: 80px 15px;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .nav-container {
+    width: 95%;
+    padding: 10px 20px;
+  }
+
+  .service-card, .contact-card {
+    padding: 25px;
+  }
+
+  .projects-grid {
     grid-template-columns: 1fr;
   }
 }

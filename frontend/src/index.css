@@ -620,5 +620,47 @@ section {
 
   .projects-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .service-card {
+    padding: 30px 20px;
+  }
+
+  .section-head {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+  }
+
+  .about-text {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  /* Fix for 3D canvas sizing on mobile */
+  canvas {
+    touch-action: none;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding: 60px 20px;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .nav-logo span {
+    font-size: 20px !important;
+  }
+
+  .submit-btn {
+    width: 100%;
   }
 }

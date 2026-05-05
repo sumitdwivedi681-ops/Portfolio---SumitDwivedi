@@ -45,16 +45,19 @@ app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, message } = req.body;
     
-    // 1. Save to Database (Fast)
+    // 1. Save to Database
     const newMessage = new Message({ name, email, message });
     await newMessage.save();
+    console.log('Message saved to DB');
 
     // 2. Respond to user immediately
     res.status(201).json({ success: true, message: 'Message saved successfully' });
 
-    // 3. Send Email in Background (Don't wait for it)
+    // 3. Send Email in Background
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
@@ -62,24 +65,55 @@ app.post('/api/contact', async (req, res) => {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER, // Gmail requires this to be the authenticated user
+      from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
-      replyTo: email, // Set visitor's email as reply-to
-      subject: `New Portfolio Message from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+      replyTo: email,
+      subject: `📩 New Portfolio Message from ${name}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px; background: #1a1a2e; color: #e0e0e0; border-radius: 10px;">
+          <h2 style="color: #9d4edd;">New Message from Your Portfolio</h2>
+          <hr style="border-color: #333;">
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #ff9e00;">${email}</a></p>
+          <p><strong>Message:</strong></p>
+          <p style="background: #16213e; padding: 15px; border-radius: 8px; line-height: 1.6;">${message}</p>
+          <hr style="border-color: #333;">
+          <p style="font-size: 12px; color: #888;">Sent from your Portfolio website</p>
+        </div>
+      `
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.error('Background Email Error:', error);
+        console.error('Email Error:', error.message);
       } else {
-        console.log('Email sent successfully:', info.response);
+        console.log('Email sent:', info.response);
       }
     });
 
   } catch (error) {
     console.error('DB Error:', error);
     res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Email test route (for debugging)
+app.get('/api/test-email', async (req, res) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    await transporter.verify();
+    res.json({ success: true, message: 'SMTP connection verified! Email is configured correctly.' });
+  } catch (error) {
+    res.json({ success: false, error: error.message });
   }
 });
 

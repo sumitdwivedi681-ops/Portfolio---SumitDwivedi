@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="nav-container glass">
+    <nav className="nav-container">
       <div className="nav-content">
         <div className="nav-logo">
           <a href="#" onClick={() => window.scrollTo(0, 0)}>

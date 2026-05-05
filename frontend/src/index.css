@@ -37,10 +37,10 @@ body {
 
 /* Glassmorphism Utility */
 .glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(35px);
-  -webkit-backdrop-filter: blur(35px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(11, 9, 10, 0.6);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
 }
 
@@ -112,7 +112,8 @@ section {
 .nav-container.scrolled {
   top: 10px;
   padding: 10px 30px;
-  background: rgba(22, 26, 29, 0.9);
+  background: rgba(11, 9, 10, 0.95);
+  backdrop-filter: blur(40px);
 }
 
 .nav-content {
@@ -173,12 +174,12 @@ section {
   pointer-events: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 968px) {
   .nav-links, .nav-socials {
-    display: none;
+    display: none !important;
   }
   .nav-mobile-toggle {
-    display: block;
+    display: block !important;
     cursor: pointer;
   }
 }

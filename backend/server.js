@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './db.js';
 import mongoose from 'mongoose';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 dotenv.config();
 connectDB();
@@ -53,43 +53,33 @@ app.post('/api/contact', async (req, res) => {
     // 2. Respond to user immediately
     res.status(201).json({ success: true, message: 'Message saved successfully' });
 
-    // 3. Send Email in Background
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
-
-    const mailOptions = {
-      from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
-      replyTo: email,
-      subject: `📩 New Portfolio Message from ${name}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; background: #1a1a2e; color: #e0e0e0; border-radius: 10px;">
-          <h2 style="color: #9d4edd;">New Message from Your Portfolio</h2>
-          <hr style="border-color: #333;">
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #ff9e00;">${email}</a></p>
-          <p><strong>Message:</strong></p>
-          <p style="background: #16213e; padding: 15px; border-radius: 8px; line-height: 1.6;">${message}</p>
-          <hr style="border-color: #333;">
-          <p style="font-size: 12px; color: #888;">Sent from your Portfolio website</p>
-        </div>
-      `
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error('Email Error:', error.message);
-      } else {
-        console.log('Email sent:', info.response);
-      }
-    });
+    // 3. Send Email via Resend API (works on all hosting platforms)
+    if (process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      
+      resend.emails.send({
+        from: 'Portfolio <onboarding@resend.dev>',
+        to: process.env.EMAIL_USER,
+        replyTo: email,
+        subject: `📩 New Portfolio Message from ${name}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; padding: 20px; background: #1a1a2e; color: #e0e0e0; border-radius: 10px;">
+            <h2 style="color: #9d4edd;">New Message from Your Portfolio</h2>
+            <hr style="border-color: #333;">
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #ff9e00;">${email}</a></p>
+            <p><strong>Message:</strong></p>
+            <p style="background: #16213e; padding: 15px; border-radius: 8px; line-height: 1.6;">${message}</p>
+            <hr style="border-color: #333;">
+            <p style="font-size: 12px; color: #888;">Sent from your Portfolio website</p>
+          </div>
+        `
+      }).then((result) => {
+        console.log('Email sent via Resend:', result);
+      }).catch((err) => {
+        console.error('Resend Error:', err);
+      });
+    }
 
   } catch (error) {
     console.error('DB Error:', error);
@@ -97,21 +87,23 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// Email test route (for debugging)
+// Email test route
 app.get('/api/test-email', async (req, res) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
+    if (!process.env.RESEND_API_KEY) {
+      return res.json({ success: false, error: 'RESEND_API_KEY not set' });
+    }
+    
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    
+    const result = await resend.emails.send({
+      from: 'Portfolio <onboarding@resend.dev>',
+      to: process.env.EMAIL_USER,
+      subject: '✅ Portfolio Email Test',
+      html: '<h1>Email is working!</h1><p>Your portfolio contact form will now send you email notifications.</p>'
     });
 
-    await transporter.verify();
-    res.json({ success: true, message: 'SMTP connection verified! Email is configured correctly.' });
+    res.json({ success: true, message: 'Test email sent!', result });
   } catch (error) {
     res.json({ success: false, error: error.message });
   }

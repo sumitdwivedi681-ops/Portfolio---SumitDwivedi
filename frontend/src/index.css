@@ -326,6 +326,20 @@ section {
 
 .about-section {
   padding: 100px 20px;
+  position: relative;
+}
+
+.about-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: var(--primary);
+  filter: blur(150px);
+  opacity: 0.1;
+  z-index: -1;
 }
 
 .about-text {
@@ -360,10 +374,22 @@ section {
   color: var(--text-dim);
 }
 
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 30px;
+.projects-section {
+  padding: 100px 20px;
+  position: relative;
+}
+
+.projects-section::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: -10%;
+  width: 450px;
+  height: 450px;
+  background: var(--accent);
+  filter: blur(160px);
+  opacity: 0.08;
+  z-index: -1;
 }
 
 .project-card {
@@ -453,11 +479,22 @@ section {
   align-items: center;
 }
 
-.contact-desc {
-  font-size: 1.1rem;
-  color: var(--text-dim);
-  line-height: 1.6;
-  max-width: 450px;
+.contact-section {
+  padding: 100px 20px;
+  position: relative;
+}
+
+.contact-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 10%;
+  width: 350px;
+  height: 350px;
+  background: var(--primary);
+  filter: blur(140px);
+  opacity: 0.12;
+  z-index: -1;
 }
 
 .contact-card {

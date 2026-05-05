@@ -34,29 +34,26 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className="nav-mobile-toggle" onClick={toggleMenu}>
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+          {isOpen ? <X size={28} color="white" /> : <Menu size={28} color="white" />}
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       {isOpen && (
-        <div className="mobile-menu glass show" style={{ display: 'block' }}>
+        <div className="mobile-menu show">
           <ul className="mobile-links">
             <li><a href="#about" onClick={toggleMenu}>About</a></li>
             <li><a href="#experience" onClick={toggleMenu}>Experience</a></li>
             <li><a href="#projects" onClick={toggleMenu}>Projects</a></li>
             <li><a href="#contact" onClick={toggleMenu}>Contact</a></li>
           </ul>
-          <div style={{ display: 'flex', gap: '20px', marginTop: '20px', justifyContent: 'center' }}>
-            <a href={githubUrl} target="_blank" rel="noreferrer" style={{ color: 'white' }}><Github size={24} /></a>
-            <a href={linkedinUrl} target="_blank" rel="noreferrer" style={{ color: 'white' }}><Linkedin size={24} /></a>
+          <div className="mobile-socials">
+            <a href={githubUrl} target="_blank" rel="noreferrer"><Github size={24} /></a>
+            <a href={linkedinUrl} target="_blank" rel="noreferrer"><Linkedin size={24} /></a>
           </div>
         </div>
       )}
     </nav>
   );
 };
-
-export default Navbar;
 
 export default Navbar;

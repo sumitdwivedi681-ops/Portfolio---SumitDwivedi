@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Code, Database, Brain, Rocket, GraduationCap } from 'lucide-react';
+import { Code, Database, Brain, Rocket } from 'lucide-react';
 import profileImg from '../assets/profile.jpg';
 
 const About: React.FC = () => {

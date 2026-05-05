@@ -37,7 +37,7 @@ const Projects: React.FC = () => {
       <h2 className="section-head">Featured Projects.</h2>
 
       <div className="projects-grid">
-        {projects.map((project, index) => (
+        {projects.map((project) => (
           <motion.div
             key={project.title}
             whileHover={{ y: -10 }}

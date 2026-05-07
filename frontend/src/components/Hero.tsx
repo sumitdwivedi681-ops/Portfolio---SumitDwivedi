@@ -25,7 +25,8 @@ const Hero: React.FC = () => {
           </p>
           <div className="hero-buttons">
             <a href="#projects" className="hero-btn">View My Projects</a>
-            <a href="#contact" className="hero-btn hero-btn-outline">Get In Touch</a>
+            <a href="/SumitCV.pdf" target="_blank" rel="noreferrer" className="hero-btn hero-btn-outline">View Resume</a>
+            <a href="/SumitCV.pdf" download="Sumit_Dwivedi_CV.pdf" className="hero-btn hero-btn-outline">Download CV</a>
           </div>
           
           <div className="hero-socials">

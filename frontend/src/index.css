@@ -866,3 +866,101 @@ section {
     touch-action: none;
   }
 }
+
+/* ======================== */
+/*   FLOATING RESUME        */
+/* ======================== */
+.resume-floating {
+  position: fixed;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 1000;
+}
+
+.floating-btn {
+  width: 55px;
+  height: 55px;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  transition: var(--transition);
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.floating-btn:hover {
+  background: var(--primary);
+  transform: scale(1.1) translateX(-5px);
+  box-shadow: 0 0 25px var(--primary);
+  color: white;
+}
+
+.floating-btn svg {
+  transition: var(--transition);
+}
+
+.floating-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.floating-btn::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  right: 75px;
+  background: var(--bg-card);
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.floating-btn:hover::after {
+  opacity: 1;
+  right: 65px;
+}
+
+@media (max-width: 968px) {
+  .resume-floating {
+    right: 20px;
+    bottom: 20px;
+    top: auto;
+    transform: none;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .resume-floating {
+    right: 15px;
+    bottom: 15px;
+    gap: 10px;
+  }
+  
+  .floating-btn {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .floating-btn::after {
+    display: none;
+  }
+}
